@@ -1,8 +1,10 @@
-{% extends 'OCCoreBundle:Core:coreLayout.html.twig' %} 
+{% extends 'OCCoreBundle::layout.html.twig' %} 
 {% use 'OCCoreBundle:Core:contact.html.twig' %}
 
 
 {% block title %}Page d'accueil{% endblock %}
+
+{% block titrePage %}Page d'accueil{% endblock %}
 
 {% block body %}
 	<!-- 
@@ -11,18 +13,10 @@
 
 	J'ai fais un petit layout (coreLayout.html.twig) pour la peine.
 	-->
-	
-	<div class="row">
-		<h1>Page d'accueil du site</h1>
-		<hr>
-	</div>
-
 	{% block messageFlash %}{{ parent() }}{% endblock %}
 
-	<div class="row">
-		<h3 style="margin-top: 10px;">Dernières annonces :</h3>
-		<ul>
-			{{ render(controller("OCPlatformBundle:Advert:menu", {'limit': 3})) }}
-		</ul>
-	</div>
+	<h3 style="margin-top: 10px;">Dernières annonces :</h3>
+	<ul>
+		{{ render(controller("OCPlatformBundle:Advert:menu", {'limit': 3})) }}
+	</ul>
 {% endblock %}

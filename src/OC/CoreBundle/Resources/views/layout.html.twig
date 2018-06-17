@@ -15,7 +15,7 @@
 <body>
   <div class="container">
     <div id="header" class="jumbotron">
-      <h1>Ma plateforme d'annonces</h1>
+      <h1>{% block titrePage %}Ma plateforme d'annonces{% endblock %}</h1>
       <p>
         Ce projet est propulsé par Symfony,
         et construit grâce au MOOC OpenClassrooms et SensioLabs.
@@ -47,7 +47,8 @@
     <hr>
 
     <footer>
-      <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
+      <p class="pull-right">The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
+      <p><a href="{{ path('oc_core_contact') }}">Nous Contacter (Lien page contact)</a></p>
     </footer>
   </div>
 
