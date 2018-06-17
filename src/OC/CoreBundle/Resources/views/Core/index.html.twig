@@ -1,0 +1,40 @@
+{% extends 'OCCoreBundle:Core:coreLayout.html.twig' %} 
+{% use 'OCCoreBundle:Core:contact.html.twig' %}
+
+
+{% block title %}Page d'accueil{% endblock %}
+
+{% block body %}
+	<!-- 
+	Il s'agit d'une page d'accueil, non spécifique à la
+	plate-forme d'annonces. Du coup, on utilisera pas son layout général.
+
+	J'ai fais un petit layout (coreLayout.html.twig) pour la peine.
+	-->
+	
+	<div class="row">
+		<h1>Page d'accueil du site</h1>
+		<hr>
+	</div>
+
+	{% block messageFlash %}
+		{{ parent() }}
+	{% endblock %}
+
+	<div class="row">
+		<h3 style="margin-top: 10px;">Dernières annonces :</h3>
+		<ul>
+			{% for advert in listAdverts %}
+				<li>
+					<a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
+						{{ advert.title }}
+					</a>
+					par {{ advert.author }}
+					le {{ advert.date|date('d/m/Y') }}
+				</li>
+			{% else %}
+				<li>Pas (encore) d'annonces !</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock %}

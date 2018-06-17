@@ -1,0 +1,10 @@
+{% block messageFlash %}
+	<div class="row" >
+		{% for flashMessage in app.session.flashbag.get('info') %}
+			<div style="margin-bottom: 0px;" class="col-md-6 alert alert-info" role="alert">
+				<p>{{ flashMessage }}</p>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}
+
