@@ -17,24 +17,12 @@
 		<hr>
 	</div>
 
-	{% block messageFlash %}
-		{{ parent() }}
-	{% endblock %}
+	{% block messageFlash %}{{ parent() }}{% endblock %}
 
 	<div class="row">
 		<h3 style="margin-top: 10px;">Dernières annonces :</h3>
 		<ul>
-			{% for advert in listAdverts %}
-				<li>
-					<a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
-						{{ advert.title }}
-					</a>
-					par {{ advert.author }}
-					le {{ advert.date|date('d/m/Y') }}
-				</li>
-			{% else %}
-				<li>Pas (encore) d'annonces !</li>
-			{% endfor %}
+			{{ render(controller("OCPlatformBundle:Advert:menu", {'limit': 3})) }}
 		</ul>
 	</div>
 {% endblock %}
