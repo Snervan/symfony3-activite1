@@ -13,9 +13,10 @@
 
 	J'ai fais un petit layout (coreLayout.html.twig) pour la peine.
 	-->
-	{% block messageFlash %}{{ parent() }}{% endblock %}
-
+	<h1>Accueil</h1>
+	<hr>
 	<h3 style="margin-top: 10px;">Dernières annonces :</h3>
+	{% block messageFlash %}{{ parent() }}{% endblock %}
 	<ul>
 		{{ render(controller("OCPlatformBundle:Advert:menu", {'limit': 3})) }}
 	</ul>
