@@ -20,7 +20,7 @@ class ApplicationMailer
 	{
 		$message = new \Swift_Message('Nouvelle Candidature', 'Vous avez reçu une nouvelle candidature');
 
-		$message->addTo('defevera@gmail.com')->addFrom('admin@jobs.com');
+		$message->addTo('admin-gestion@jobs.com')->addFrom('admin@jobs.com');
 
 		$this->mailer->send($message);
 	}
