@@ -19,7 +19,7 @@ class AdvertPurger
 	{
 		$date = new \Datetime($days. 'days ago'); //On récupère la date d'il y a $days jours
 
-		$listAdverts = $this->em->getRepository('OCPlatformBundle:Advert')->getAdvertsBefore($date);
+		$listAdverts = $this->em->getRepository('OCPlatformBundle:Advert')->getAllAdvertsBeforeDate($date);
 
 		foreach ($listAdverts as $advert) {
 			$listAdvertSkills = $this->em->getRepository('OCPlatformBundle:AdvertSkill')->findBy(array('advert' => $advert));

@@ -9,7 +9,10 @@
 	<div style="float: left; margin-right: 1em;">
 		{# On vérifie qu'une image soit bien associée à l'article #}
 		{% if advert.image is not null %}
-			<img src="{{ advert.image.url }}" alt="{{ advert.image.alt }}" height="80">
+			<img
+			src="{{ asset(advert.image.webPath) }}"
+			alt="{{ advert.image.alt }}"
+			height = '80' />
 		{% endif %}
 	</div>
 
@@ -48,7 +51,7 @@
 		</a>
 		<a href="{{ path('oc_platform_edit', {'id': advert.id}) }}" class="btn btn-default">
 			<i class="glyphicon glyphicon-edit"></i>
-			Modifier l'annonce
+			{{ 'Advert.show.edit_button'|trans }}
 		</a>
 		<a href="{{ path('oc_platform_delete', {'id': advert.id}) }}" class="btn btn-danger">
 			<i class="glyphicon glyphicon-trash"></i>

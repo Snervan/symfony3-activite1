@@ -1,5 +1,137 @@
 <h3>Formulaire d'annonces :</h3>
 
 <div class="well">
-	Ici se trouvera le formulaire.
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+  {# Les erreurs générales du formulaire. #}
+  {{ form_errors(form) }}
+
+  {# Génération du label + error + widget pour un champ. #}
+  {% if form.date is defined %}
+    	{{ form_row(form.date, {'attr': {'class': 'col-sm-12'}}) }}
+  {% endif %}
+
+  {# Génération manuelle et éclatée : #}
+  <div class="form-group">
+    {# Génération du label. #}
+    {{ form_label(form.title, "Titre de l'annonce", {'label_attr': {'class': 'control-label'}}) }}
+
+    {# Affichage des erreurs pour ce champ précis. #}
+    {{ form_errors(form.title) }}
+
+    {# Génération de l'input. #}
+    <div class="col-sm-12">
+    	{{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+	</div>
+  </div>
+
+  {# Idem pour un autre champ. #}
+  <div class="form-group">
+    {{ form_label(form.content, "Contenu de l'annonce", {'label_attr': {'class': 'control-label'}}) }}
+    {{ form_errors(form.content) }}
+
+    <div class="col-sm-12">
+      {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+
+  {# Idem pour catégories. #}
+  <div class="form-group">
+    {{ form_label(form.categories, "Catégories :", {'attr_label': {'class': 'col-sm-12'}}) }}
+
+    <div class="col-sm-12">
+      {{ form_widget(form.categories) }}
+    </div>
+  </div>
+
+  {# Idem pour le champ image. #}
+  <div class="form-group">
+    {{ form_label(form.image, "Image de l'annonce :", {'attr_label': {'class': 'col-sm-2'}}) }}
+
+    <div class="col-sm-12">
+      {{ form_widget(form.image, {'attr': {'class': 'col-sm-8'}}) }}
+    </div>
+  </div>
+
+  {{ form_row(form.author) }}
+
+  {% if form.published is defined %}
+    {{ form_row(form.published) }}
+  {% endif %}
+
+  {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+  {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+
+  {# Génération automatique des champs pas encore écrits.
+     Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+     et tous les champs cachés (type « hidden »). #}
+  {{ form_rest(form) }}
+
+  {# Fermeture de la balise <form> du formulaire HTML #}
+  {{ form_end(form) }}
+
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+  <script type="text/javascript">
+  	$(document).ready(function() {
+  		var $container = $('div#oc_platformbundle_advert_categories');
+
+  		var index = $container.find(':input').length;
+
+  		$('#add_category').click(function(e) {
+  			addCategory($container);
+
+  			e.preventDefault();
+  			return false;
+  		});
+
+  		if(index == 0) {
+  			addCategory($container);
+  		} else {
+  			$container.children('div').each(function() {
+  				addDeleteLink($(this));
+  			});
+  		}
+
+  		//La fonction ajoutant un formulaire CategoryType
+  		function addCategory($container) {
+  			//Dans le contexte "data-prototype", on remplace :
+  			// le texte "__name__label__" qu'il contient par le label du champ
+  			// le texte "__name__" qu'il contient par le numéro du champ
+  			var template = $container.attr('data-prototype').replace(/__name__label__/g, 'Catégorie n°' + (index+1))
+  			.replace(/__name__/g, index);
+
+  			cssBootstrap = $("<div style='margin: 5px;' class='col-sm-12'></div>");
+  			$(cssBootstrap).append($(template));
+
+  			//On créé un objet jQuery qui contient le template
+  			var $prototype = $(cssBootstrap);
+
+  			//On ajoute au prototype un lien pour pouvoir supprimer la catégorie
+  			addDeleteLink($prototype);
+
+  			//On ajoute le prototype à la fin de la balise
+  			$container.append($prototype);
+
+  			//Enfin on incrément le compteur pour changer le numéro
+  			index++;
+  		}
+
+  		function addDeleteLink($prototype)
+  		{
+  			var $deleteLink = $('<a style="margin: 5px;" class="btn btn-danger">Supprimer</a>');
+
+  			//Ajout du lien
+  			$prototype.append($deleteLink);
+
+  			//Ajout du listener du click pour suppression
+  			$deleteLink.click(function(e) {
+  				$prototype.remove();
+
+  				e.preventDefault();
+  				return false;
+  			});
+  		}
+  	});
+  </script>
 </div>

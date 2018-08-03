@@ -7,6 +7,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
+use OC\PlatformBundle\Validator\Antiflood;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 /**
  * Advert
  *
@@ -18,12 +23,12 @@ class Advert
 {
     /**
      * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
+     * @Assert\Valid()
      */
     private $image;
 
     /**
-     * @ORM\ManyToMany(targetEntity="OC\PlatformBundle\Entity\Category", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="OC\PlatformBundle\Entity\Category", cascade={"persist", "remove"})
      * @ORM\JoinTable(name="oc_advert_category")
      */
     private $categories;
@@ -62,6 +67,7 @@ class Advert
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     * @Assert\DateTime()
      */
     private $date;
 
@@ -69,6 +75,7 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\Length(min=10, minMessage="Le titre doit faire au moins {{ limit }} caractères")
      */
     private $title;
 
@@ -76,6 +83,7 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="author", type="string", length=255)
+     * @Assert\Length(min=2, minMessage="Le titre doit faire au moins {{ limit }} caractères")
      */
     private $author;
 
@@ -83,6 +91,8 @@ class Advert
      * @var string
      *
      * @ORM\Column(name="content", type="text")
+     * @Assert\NotBlank()
+     * @Antiflood()
      */
     private $content;
 
@@ -202,6 +212,24 @@ class Advert
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function isContentValid(ExecutionContextInterface $context)
+    {
+        $forbiddenWords = array('démotivation', 'abandon');
+
+        // On vérifie que le contenu ne contient pas l'un des mots
+        if (preg_match('#'.implode('|', $forbiddenWords).'#', $this->getContent())) {
+            // La règle est violée, on définit l'erreur
+            $context
+            ->buildViolation('Contenu invalide car il contient un mot interdit.') // message
+            ->atPath('content')                                                   // attribut de l'objet qui est violé
+            ->addViolation() // ceci déclenche l'erreur, ne l'oubliez pas
+            ;
+        }
     }
 
     /**

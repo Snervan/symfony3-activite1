@@ -1,0 +1,16 @@
+{% extends "OCCoreBundle::layout.html.twig" %}
+
+{% block body %}
+	{# On affiche les messages flash #}
+	{% for key, messages in app.session.flashbag.all() %}
+		{% for message in messages %}
+			<div class="alert alert-{{ key }}">
+				{{ message|trans({}, 'FOSUserBundle') }}
+			</div>
+		{% endfor %}
+	{% endfor %}
+
+	{# On définit ce bloc dans lequel vont venir s'insérer d'autres vues du bundle #}
+	{% block fos_user_content %}
+	{% endblock %}
+{% endblock %}

@@ -28,11 +28,10 @@ class AdvertRepository extends EntityRepository
     ;
 
     // Enfin, on retourne l'objet Paginator correspondant à la requête construite
-    // (n'oubliez pas le use correspondant en début de fichier)
     return new Paginator($query, true);
   }
 
-  public function getAdvertsBefore($date)
+  public function getAllAdvertsBeforeDate($date)
   {
     return $this->createQueryBuilder('a')
       ->where('a.updatedAt <= :date')
@@ -41,54 +40,6 @@ class AdvertRepository extends EntityRepository
       ->setParameter('date', $date)
       ->getQuery()
       ->getResult() ;
-  }
-
-  public function myFindAll()
-  {
-    // Méthode 1 : en passant par l'EntityManager
-    $queryBuilder = $this->_em->createQueryBuilder()
-      ->select('a')
-      ->from($this->_entityName, 'a')
-    ;
-    // Dans un repository, $this->_entityName est le namespace de l'entité gérée
-    // Ici, il vaut donc OC\PlatformBundle\Entity\Advert
-
-    // Méthode 2 : en passant par le raccourci (je recommande)
-    $queryBuilder = $this->createQueryBuilder('a');
-
-    // On n'ajoute pas de critère ou tri particulier, la construction
-    // de notre requête est finie
-
-    // On récupère la Query à partir du QueryBuilder
-    $query = $queryBuilder->getQuery();
-
-    // On récupère les résultats à partir de la Query
-    $results = $query->getResult();
-
-    // On retourne ces résultats
-    return $results;
-  }
-
-  public function myFind()
-  {
-    $qb = $this->createQueryBuilder('a');
-
-    // On peut ajouter ce qu'on veut avant
-    $qb
-      ->where('a.author = :author')
-      ->setParameter('author', 'Marine')
-    ;
-
-    // On applique notre condition sur le QueryBuilder
-    $this->whereCurrentYear($qb);
-
-    // On peut ajouter ce qu'on veut après
-    $qb->orderBy('a.date', 'DESC');
-
-    return $qb
-      ->getQuery()
-      ->getResult()
-    ;
   }
 
   public function getAdvertWithCategories(array $categoryNames)

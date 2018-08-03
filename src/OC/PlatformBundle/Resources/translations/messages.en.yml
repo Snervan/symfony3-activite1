@@ -1,0 +1,10 @@
+Hello: Hello %name%!
+Bye: Bye
+
+Advert:
+  edit:
+    title: Advert Editing
+    submit_button: Send
+  show:
+    edit_button: Modify advert
+    create_button: Add an advert

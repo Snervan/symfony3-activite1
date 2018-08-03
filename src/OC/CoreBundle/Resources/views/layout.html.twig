@@ -8,7 +8,7 @@
 
   {% block stylesheets %}
     {# On charge le CSS de bootstrap depuis le site directement #}
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' type="text/css" />
   {% endblock %}
 </head>
 
@@ -34,7 +34,17 @@
           <ul class="nav nav-pills nav-stacked">
             <li><a href="{{ path('oc_core_homepage') }}">Accueil</a></li>
             <li><a href="{{ path('oc_platform_home') }}">Liste des annonces</a></li>
-            <li><a href="{{ path('oc_platform_add') }}">Ajouter une annonce</a></li>
+            {% if is_granted('ROLE_AUTEUR') %}
+              <li><a href="{{ path('oc_platform_add') }}">Ajouter une annonce</a></li>
+            {% endif %}
+            <h3>Utilisateur</h3>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+              Connecté en tant que {{ app.user.username }}
+              <br>
+              <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+            {% else %}
+              <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+            {% endif %}
           </ul>
 
           <h4>Contact</h4>
@@ -60,10 +70,13 @@
   </div>
 
   {% block javascripts %}
-    {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  {% endblock %}
 
+    {% javascripts '//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' 
+    '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js' %}
+      {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter, on utilise assetic pour optimiser le chargement des scripts js #}
+      <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+  {% endblock %}
 </body>
 </html>

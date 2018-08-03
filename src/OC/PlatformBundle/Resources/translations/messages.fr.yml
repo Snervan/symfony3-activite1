@@ -1,0 +1,10 @@
+Hello: Bonjour %name% !
+Bye: 'Au revoir'
+
+Advert:
+  edit:
+    title: Edition d'une annonce
+    submit_button: Valider
+  show:
+    edit_button: Editer l'annonce
+    create_button: Créer une nouvelle annonce
